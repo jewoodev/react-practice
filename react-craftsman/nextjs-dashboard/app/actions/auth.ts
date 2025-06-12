@@ -57,7 +57,7 @@ export async function register(prevState: any, formData: FormData) {
 }
 
 
-const LoginSchema = z.object({
+const loginSchema = z.object({
     username: z.string().min(1, '사용자명을 입력해주세요'),
     password: z.string().min(1, '비밀번호을 입력해주세요'),
 });
@@ -65,7 +65,7 @@ const LoginSchema = z.object({
 export async function login(prevState: any, formData: FormData) {
     try {
         const formDataObj = Object.fromEntries(formData);
-        const validatedData = LoginSchema.parse(formDataObj);
+        const validatedData = loginSchema.parse(formDataObj);
 
         const response = await fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
