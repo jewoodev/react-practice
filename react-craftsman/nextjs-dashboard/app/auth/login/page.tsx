@@ -1,27 +1,30 @@
 'use client';
 
-import { useFormStatus } from 'react-dom';
-import { register } from '@/app/actions/auth';
+import {login} from '@/app/actions/auth';
 import {useActionState} from "react";
+import { useFormStatus } from 'react-dom';
+import {useRouter} from "next/navigation";
+import Link from 'next/link';
 
 // Submit 버튼 컴포넌트
-function SubmitButton() {
+function LoginButton() {
     const { pending } = useFormStatus();
+    const router = useRouter();
 
     return (
         <button
             type="submit"
             disabled={pending}
-            className="w-full bg-blue-600 py-2 px-4 text-white rounded-md hover:bg-blue-700
-                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => router.push('/dashboard')}
+            className="w-1/2 bg-blue-500 py-2 px-4 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-            {pending ? '처리중...' : '회원가입'}
+            {pending ? '처리중...' : '로그인'}
         </button>
+
     );
 }
 
-export default function RegisterForm() {
+export default function LoginPage() {
     // 초기 상태 설정
     const initialState = {
         success: false,
@@ -29,11 +32,11 @@ export default function RegisterForm() {
         data: null,
     };
 
-    const [state, formAction] = useActionState(register, initialState)
+    const [state, formAction] = useActionState(login, initialState)
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-center">회원가입</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
 
             <form action={formAction} className="space-y-4">
                 {state?.error && (
@@ -56,19 +59,6 @@ export default function RegisterForm() {
                 </div>
 
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                        이메일
-                    </label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    />
-                </div>
-
-                <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                         비밀번호
                     </label>
@@ -81,22 +71,16 @@ export default function RegisterForm() {
                     />
                 </div>
 
-                <div>
-                    <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-                        회원 유형
-                    </label>
-                    <select
-                        id="role"
-                        name="role"
-                        defaultValue="DENTAL"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    >
-                        <option value="DENTAL">치과</option>
-                        <option value="LAB">기공소</option>
-                    </select>
+                <div className="flex gap-x-4">
+                    <LoginButton />
+                    <Link href="/auth/register" className="w-1/2">
+                        <div
+                            className="w-full bg-sky-500 py-2 px-4 text-white rounded-md hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed text-center"
+                        >
+                            회원가입
+                        </div>
+                    </Link>
                 </div>
-
-                <SubmitButton />
             </form>
         </div>
     );
