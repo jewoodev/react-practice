@@ -1,4 +1,3 @@
-
 'use client'
 
 import {login} from '@/app/actions/auth'
@@ -24,9 +23,9 @@ function LoginButton() {
 
 // 상태 타입 정의
 type LoginState = {
-    success: boolean;
-    error?: string;
-    data?: unknown;
+    success: boolean
+    error?: string
+    data?: unknown
 }
 
 export default function LoginPage() {

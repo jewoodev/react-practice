@@ -35,9 +35,9 @@ export function Card({
   value,
   type,
 }: {
-  title: string;
-  value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  title: string
+  value: number | string
+  type: 'invoices' | 'customers' | 'pending' | 'collected'
 }) {
   const Icon = iconMap[type]
 

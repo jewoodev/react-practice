@@ -4,9 +4,9 @@ import { z } from 'zod/v4'
 
 // 공통 상태 타입 정의
 type ActionState = {
-    success: boolean;
-    error?: string;
-    data?: unknown;
+    success: boolean
+    error?: string
+    data?: unknown
 }
 
 const RegisterSchema = z.object({
