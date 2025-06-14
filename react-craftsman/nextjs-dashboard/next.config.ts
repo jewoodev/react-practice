@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+    experimental: {
+        typedRoutes: true,
+    },
+    eslint: {
+        dirs: ['app'],
+    },
+}
 
-export default nextConfig;
+export default nextConfig

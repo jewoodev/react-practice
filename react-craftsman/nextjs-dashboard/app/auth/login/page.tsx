@@ -1,38 +1,52 @@
-'use client';
 
-import {login} from '@/app/actions/auth';
-import {useActionState} from "react";
-import { useFormStatus } from 'react-dom';
-import {useRouter} from "next/navigation";
-import Link from 'next/link';
+'use client'
+
+import {login} from '@/app/actions/auth'
+import {useActionState, useEffect} from "react"
+import { useFormStatus } from 'react-dom'
+import {useRouter} from "next/navigation"
+import Link from 'next/link'
 
 // Submit 버튼 컴포넌트
 function LoginButton() {
-    const { pending } = useFormStatus();
-    const router = useRouter();
+    const { pending } = useFormStatus()
 
     return (
         <button
             type="submit"
             disabled={pending}
-            onClick={() => router.push('/dashboard')}
             className="w-1/2 bg-blue-500 py-2 px-4 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {pending ? '처리중...' : '로그인'}
         </button>
+    )
+}
 
-    );
+// 상태 타입 정의
+type LoginState = {
+    success: boolean;
+    error?: string;
+    data?: unknown;
 }
 
 export default function LoginPage() {
-    // 초기 상태 설정
-    const initialState = {
+    const router = useRouter()
+
+    // 초기 상태 설정 - login 함수의 반환 타입과 일치하도록 수정
+    const initialState: LoginState = {
         success: false,
         error: undefined,
-        data: null,
-    };
+        data: undefined,
+    }
 
     const [state, formAction] = useActionState(login, initialState)
+
+    // 로그인 성공 시 페이지 이동
+    useEffect(() => {
+        if (state?.success) {
+            router.push('/dashboard')
+        }
+    }, [state?.success, router])
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
@@ -83,5 +97,5 @@ export default function LoginPage() {
                 </div>
             </form>
         </div>
-    );
+    )
 }

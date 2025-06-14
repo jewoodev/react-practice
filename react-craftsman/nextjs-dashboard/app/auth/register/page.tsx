@@ -1,12 +1,12 @@
-'use client';
+'use client'
 
-import { useFormStatus } from 'react-dom';
-import { register } from '@/app/actions/auth';
-import {useActionState} from "react";
+import { useFormStatus } from 'react-dom'
+import { register } from '@/app/actions/auth'
+import {useActionState} from "react"
 
 // Submit 버튼 컴포넌트
 function SubmitButton() {
-    const { pending } = useFormStatus();
+    const { pending } = useFormStatus()
 
     return (
         <button
@@ -18,7 +18,7 @@ function SubmitButton() {
         >
             {pending ? '처리중...' : '회원가입'}
         </button>
-    );
+    )
 }
 
 export default function RegisterPage() {
@@ -27,7 +27,7 @@ export default function RegisterPage() {
         success: false,
         error: undefined,
         data: null,
-    };
+    }
 
     const [state, formAction] = useActionState(register, initialState)
 
@@ -99,5 +99,5 @@ export default function RegisterPage() {
                 <SubmitButton />
             </form>
         </div>
-    );
+    )
 }

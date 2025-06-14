@@ -1,6 +1,6 @@
-import { clsx } from 'clsx';
-import Link from 'next/link';
-import { lusitana } from '@/app/ui/fonts';
+import { clsx } from 'clsx'
+import Link from 'next/link'
+import { lusitana } from '@/app/ui/fonts'
 
 interface Breadcrumb {
   label: string;
@@ -32,5 +32,5 @@ export default function Breadcrumbs({
         ))}
       </ol>
     </nav>
-  );
+  )
 }
