@@ -86,6 +86,8 @@ export async function login(prevState: ActionState, formData: FormData): Promise
             throw new Error(data.message || '로그인 중 오류가 발생했습니다')
         }
 
+        TokenManager.setToken(data.token)
+
         return { success: true, data }
     } catch (error) {
         if (error instanceof z.ZodError) {
