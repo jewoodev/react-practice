@@ -5,6 +5,8 @@ import {useActionState, useEffect} from "react"
 import { useFormStatus } from 'react-dom'
 import {useRouter} from "next/navigation"
 import Link from 'next/link'
+import {TokenManager} from "@/lib/token-manager"
+import {SignInFormState} from "@/lib/definition"
 
 // Submit 버튼 컴포넌트
 function LoginButton() {
@@ -21,42 +23,24 @@ function LoginButton() {
     )
 }
 
-// 상태 타입 정의
-type LoginState = {
-    success: boolean
-    error?: string
-    data?: unknown
-}
-
 export default function LoginPage() {
     const router = useRouter()
 
-    // 초기 상태 설정 - login 함수의 반환 타입과 일치하도록 수정
-    const initialState: LoginState = {
-        success: false,
-        error: undefined,
-        data: undefined,
-    }
-
-    const [state, formAction] = useActionState(login, initialState)
+    const [state, action] = useActionState(login, undefined)
 
     // 로그인 성공 시 페이지 이동
     useEffect(() => {
-        if (state?.success) {
+        if (!state?.errors && state?.data?.token) {
             router.push('/dashboard')
+            TokenManager.setToken(state.data.token)
         }
-    }, [state?.success, router])
+    }, [])
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
 
-            <form action={formAction} className="space-y-4">
-                {state?.error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                        <p>{state.error}</p>
-                    </div>
-                )}
+            <form action={action} className="space-y-4">
 
                 <div>
                     <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
@@ -70,6 +54,7 @@ export default function LoginPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+                {state?.errors?.username && <p>{state.errors.username}</p>}
 
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -83,6 +68,7 @@ export default function LoginPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+                {state?.errors?.password && <p>{state.errors.password}</p>}
 
                 <div className="flex gap-x-4">
                     <LoginButton />

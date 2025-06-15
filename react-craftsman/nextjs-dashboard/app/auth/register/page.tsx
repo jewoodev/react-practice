@@ -1,7 +1,7 @@
 'use client'
 
 import { useFormStatus } from 'react-dom'
-import { register } from '@/app/actions/auth'
+import { signUp } from '@/app/actions/auth'
 import {useActionState} from "react"
 
 // Submit 버튼 컴포넌트
@@ -22,25 +22,14 @@ function SubmitButton() {
 }
 
 export default function RegisterPage() {
-    // 초기 상태 설정
-    const initialState = {
-        success: false,
-        error: undefined,
-        data: null,
-    }
 
-    const [state, formAction] = useActionState(register, initialState)
+    const [state, action] = useActionState(signUp, undefined)
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-center">회원가입</h2>
 
-            <form action={formAction} className="space-y-4">
-                {state?.error && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                        <p>{state.error}</p>
-                    </div>
-                )}
+            <form action={action} className="space-y-4">
 
                 <div>
                     <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
@@ -54,6 +43,7 @@ export default function RegisterPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+                {state?.errors?.username && <p>{state.errors.username}</p>}
 
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -67,6 +57,7 @@ export default function RegisterPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+                {state?.errors?.email && <p>{state.errors.email}</p>}
 
                 <div>
                     <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
@@ -80,6 +71,7 @@ export default function RegisterPage() {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
+                {state?.errors?.password && <p>{state.errors.password}</p>}
 
                 <div>
                     <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
@@ -95,6 +87,7 @@ export default function RegisterPage() {
                         <option value="LAB">기공소</option>
                     </select>
                 </div>
+                {state?.errors?.role && <p>{state.errors.role}</p>}
 
                 <SubmitButton />
             </form>
