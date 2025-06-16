@@ -1,6 +1,7 @@
 'use server'
 
-import {SignInFormState, SignInFormSchema, SignUpFormSchema, SignUpFormState} from '@/lib/definition'
+import {SignInFormState, SignInFormSchema, SignUpFormSchema, SignUpFormState} from '@/app/lib/definition'
+import {TokenManager} from "@/app/lib/token-manager"
 
 
 export async function signUp(prevState: SignUpFormState, formData: FormData): Promise<SignUpFormState> {
@@ -74,6 +75,10 @@ export async function login(prevState: SignInFormState, formData: FormData): Pro
 
         if (!response.ok) {
             throw new Error(data.message || '로그인 중 오류가 발생했습니다')
+        }
+
+        if (data.accessToken && data.refreshToken) {
+            TokenManager.setToken(data.accessToken, data.refreshToken)
         }
 
         return { data }

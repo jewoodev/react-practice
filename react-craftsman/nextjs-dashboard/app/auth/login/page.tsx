@@ -5,8 +5,6 @@ import {useActionState, useEffect} from "react"
 import { useFormStatus } from 'react-dom'
 import {useRouter} from "next/navigation"
 import Link from 'next/link'
-import {TokenManager} from "@/lib/token-manager"
-import {SignInFormState} from "@/lib/definition"
 
 // Submit 버튼 컴포넌트
 function LoginButton() {
@@ -32,7 +30,6 @@ export default function LoginPage() {
     useEffect(() => {
         if (!state?.errors && state?.data?.token) {
             router.push('/dashboard')
-            TokenManager.setToken(state.data.token)
         }
     }, [])
 
@@ -63,7 +60,7 @@ export default function LoginPage() {
                     <input
                         id="password"
                         name="password"
-                        type="password"
+                        type="text"
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />

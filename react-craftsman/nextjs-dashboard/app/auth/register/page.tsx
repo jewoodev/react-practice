@@ -2,7 +2,8 @@
 
 import { useFormStatus } from 'react-dom'
 import { signUp } from '@/app/actions/auth'
-import {useActionState} from "react"
+import {useActionState, useEffect} from "react"
+import {useRouter} from "next/navigation"
 
 // Submit 버튼 컴포넌트
 function SubmitButton() {
@@ -22,8 +23,15 @@ function SubmitButton() {
 }
 
 export default function RegisterPage() {
+    const router = useRouter()
 
     const [state, action] = useActionState(signUp, undefined)
+
+    useEffect(() => {
+        if (!state?.errors && !state?.message) {
+            router.push('/auth/login')
+        }
+    }, []);
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
