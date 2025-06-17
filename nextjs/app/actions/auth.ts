@@ -1,7 +1,7 @@
 'use server'
 
 import {SignInFormState, SignInFormSchema, SignUpFormSchema, SignUpFormState} from '@/app/lib/definition'
-import {TokenManager} from "@/app/lib/token-manager"
+import {setToken} from "@/app/actions/token-manager"
 
 
 export async function signUp(prevState: SignUpFormState, formData: FormData): Promise<SignUpFormState> {
@@ -25,7 +25,7 @@ export async function signUp(prevState: SignUpFormState, formData: FormData): Pr
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(validatedFields),
+            body: JSON.stringify(validatedFields.data),
         })
 
         // 3. 응답 처리
@@ -68,7 +68,7 @@ export async function login(prevState: SignInFormState, formData: FormData): Pro
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(validatedFields),
+            body: JSON.stringify(validatedFields.data),
         })
 
         const data = await response.json()
@@ -78,7 +78,7 @@ export async function login(prevState: SignInFormState, formData: FormData): Pro
         }
 
         if (data.accessToken && data.refreshToken) {
-            TokenManager.setToken(data.accessToken, data.refreshToken)
+            await setToken(data.accessToken, data.refreshToken)
         }
 
         return { data }

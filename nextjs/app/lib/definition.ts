@@ -44,7 +44,7 @@ export type SignInFormState =
         }
         message?: string
         data?: {
-            token?: string
+            accessToken?: string
         }
     }
     | undefined

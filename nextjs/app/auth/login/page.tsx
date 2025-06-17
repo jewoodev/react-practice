@@ -28,7 +28,7 @@ export default function LoginPage() {
 
     // 로그인 성공 시 페이지 이동
     useEffect(() => {
-        if (!state?.errors && state?.data?.token) {
+        if (!state?.errors) {
             router.push('/dashboard')
         }
     }, [])
@@ -60,7 +60,7 @@ export default function LoginPage() {
                     <input
                         id="password"
                         name="password"
-                        type="text"
+                        type="password"
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
